@@ -1,0 +1,63 @@
+<html>
+    <head></head>
+
+ <body>
+
+<base target="htmz">
+
+
+<!-- <a href="./flower.html#my-element" target=htmz>Flower</a> -->
+
+<a href="./flower.html#my-element" >Flower</a> 
+<div id="my-element"></div>
+
+<form id='greeting' action="/greeting#result" >
+    <label>
+        What's your name?
+        <input name="name">
+    </label>
+
+    <button>Greet me</button>
+</form>
+<div id="result"></div>
+
+<form id='greeting' action="/greetingMulti#result-1" >
+    <label>
+        What's your name?
+        <input name="name">
+    </label>
+
+    <button>Greet me</button>
+</form>
+
+<div id="result-1"></div>
+<div id="result-2"></div>
+
+<script>
+function htmz(frame) {
+    setTimeout(() => {
+
+        const mainTargetConsumed = !!frame.contentDocument.querySelector( frame.contentWindow.location.hash || null
+      );
+
+        const elements = [...frame.contentDocument.querySelectorAll("[id]")];
+
+        // reverse order so we extract children before parents
+        for (const element of elements.reverse()) {
+            document.getElementById(element.id)?.replaceWith(element);
+        }
+
+        if (mainTargetConsumed) return;
+    
+      document
+        .querySelector(frame.contentWindow.location.hash || null)
+        ?.replaceWith(...frame.contentDocument.body.children)
+    });
+}
+</script>
+
+<iframe hidden name="htmz" onload="window.htmz(this)"></iframe>
+
+</body>
+
+</html>
